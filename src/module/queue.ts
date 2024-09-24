@@ -2,15 +2,32 @@ import { TextChannel, VoiceChannel } from 'discord.js';
 
 import { Collection } from '@discordjs/collection';
 
+import { Node, Player } from 'tsumi';
+
 export class GuildQueue {
 	guildId: string;
 
-	queue: object[];
+	queue: Object[];
 	queueSize: number;
 	index: number;
 
 	textChannel: TextChannel | null;
 	voiceChannel: VoiceChannel | null;
+
+	node: Node;
+	player: Player;
+
+	pause = async (): Promise<Object> => {
+		return await this.player.pause();
+	};
+
+	resume = async (): Promise<Object> => {
+		return await this.player.resume();
+	};
+
+	stop = async (): Promise<Object> => {
+		return await this.player.stop();
+	};
 }
 
 export class Queue {
