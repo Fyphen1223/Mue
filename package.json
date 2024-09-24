@@ -1,0 +1,20 @@
+{
+  "name": "Mue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/collection": "^2.1.1",
+    "discord.js": "^14.16.2",
+    "tsumi": "github:Fyphen1223/TsumiLink"
+  },
+  "devDependencies": {
+    "eslint": "^9.11.1"
+  }
+}
