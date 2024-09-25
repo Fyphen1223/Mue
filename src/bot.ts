@@ -1,19 +1,36 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const config = require('./config.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import discord from 'discord.js';
+import * as types from '../types/types.ts';
 
 import { TsumiInstance } from 'tsumi';
+const config = {
+	bot: {
+		applicationId: '123456789',
+	},
+	config: {
+		log: {
+			filePath: './logs/log.txt',
+			folderPath: './logs',
+		},
+		userAgent: 'Mue/0.0.1',
+	},
+};
 
-import { Queue } from './module/queue';
-import { log as l } from './module/log';
+import { Queue as q } from './module/queue.ts';
+import { log as l } from './module/log.ts';
 const log: l = new l({
 	logFilePath: config.config.log.filePath,
 	logLevel: 0,
 	fileLogThreshold: 0,
+	logFolderPath: config.config.log.folderPath,
 });
+log.init();
 
 const client: discord.Client = new discord.Client({
 	intents: [
@@ -48,11 +65,18 @@ const Tsumi: TsumiInstance = new TsumiInstance({
 	userAgent: config?.config?.userAgent || 'Mue/0.0.1',
 });
 
-const queue: Queue = new Queue();
+const Queue: q = new q();
 
+declare module 'discord.js' {
+	export interface Client {
+		commands: discord.Collection<string, types.command>;
+		buttons: discord.Collection<string, types.command>;
+	}
+}
 client.commands = new discord.Collection();
 client.buttons = new discord.Collection();
 
+/*
 const commandsFolder = fs.readdirSync(path.join(__dirname, 'commands'));
 for (const folder of commandsFolder) {
 	const commandsPath = path.join(path.join(__dirname, 'commands'), folder);
@@ -72,7 +96,8 @@ for (const folder of commandsFolder) {
 		}
 	}
 }
+*/
 
 client.once('ready', async () => {
-	console.log('Ready!');
+	log.log(`Logged in as ${client.user?.tag}`, 1);
 });

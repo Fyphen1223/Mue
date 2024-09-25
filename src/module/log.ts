@@ -1,9 +1,11 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export interface logOptions {
 	logFilePath: string;
 	logLevel: number;
 	fileLogThreshold: number;
+	logFolderPath: string;
 }
 
 export class log {
@@ -11,6 +13,7 @@ export class log {
 		this.logFilePath = options.logFilePath;
 		this.logLevel = options.logLevel;
 		this.fileLogThreshold = options.fileLogThreshold;
+		this.logFolderPath = options.logFolderPath;
 	}
 
 	logFilePath: string;
@@ -19,6 +22,9 @@ export class log {
 	fileLogThreshold: number;
 
 	init = (): void => {
+		if (!fs.existsSync(path.dirname(this.logFolderPath))) {
+			fs.mkdirSync(path.dirname(this.logFolderPath));
+		}
 		if (!fs.existsSync(this.logFilePath)) {
 			fs.writeFileSync(this.logFilePath, '');
 		} else {
@@ -53,7 +59,7 @@ export class log {
 		switch (level) {
 			case 0:
 				msg = `[ DBG ]: ${message} [${new Date().toISOString()}]`;
-				colored = `\u001b[34m[ INF ]\u001b[0m: ${message} [${new Date().toISOString()}]`;
+				colored = `\u001b[34m[ DBG ]\u001b[0m: ${message} [${new Date().toISOString()}]`;
 				break;
 			case 1:
 				msg = `[ INF ]: ${message} [${new Date().toISOString()}]`;
@@ -72,8 +78,8 @@ export class log {
 				colored = 'Null';
 		}
 
-		console.log(msg);
-		this.writeToFile(colored);
+		console.log(colored);
+		this.writeToFile(msg);
 		return;
 	};
 
