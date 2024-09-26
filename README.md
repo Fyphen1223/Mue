@@ -7,6 +7,11 @@ Mue
 <h1>
 Features
 </h1>
+<h1>
+Get started
+</h1>
+
+Execute bot's process with this command on latest version of Node.js: `node --experimental-strip-types ./src/bot.ts`
 
 <h1>
 Code Standard
