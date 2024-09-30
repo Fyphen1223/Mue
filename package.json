@@ -14,6 +14,7 @@
     "@discordjs/collection": "^2.1.1",
     "@napi-rs/canvas": "^0.1.56",
     "discord.js": "^14.16.2",
+    "groq-sdk": "^0.7.0",
     "tsumi": "github:Fyphen1223/TsumiLink"
   },
   "devDependencies": {
